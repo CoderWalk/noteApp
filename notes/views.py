@@ -4,6 +4,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
 from .models import Note
 from .form import NoteCreationForm,NoteUpdationForm
+from django.contrib.auth.decorators import login_required
 # Create your views here.
 def index(request):
     #return HttpResponse("<h1>Hello World</h1>")
@@ -29,9 +30,11 @@ def home(request):
 #def login(request):
 #    return render(request,'')
 
+@login_required
 def loggedout(request):
     return render(request,'notes/loggedout.html')
 
+@login_required
 def register(request):
     if(request.method=='POST'):
         form=UserCreationForm(request.POST)
@@ -49,6 +52,7 @@ def register(request):
 def settings(request):
     return render(request,'notes/settings.html')
 
+@login_required
 def update(request,id):
     note_to_update = Note.objects.get(id=id)
     form = NoteUpdationForm(instance=note_to_update)
